@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qura posts</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Quora posts</h1>
+    <% for(post of posts){ %>
+
+    <div class="postcontent">
+        <h3 class="username">@<%=post.username %>!! </h3>
+        <h4 class="content"> <%=post.content %></h4>
+        <button> <a href="http://localhost:8080/posts/<%= post.id %>">see in details</a> </button>
+    </div>
+   <%  } %>
+
+   
+    <br>
+    <br>
+    <a href="http://localhost:8080/posts/new"> <button> creat your new posts</button></a>
+</body>
+</html>
