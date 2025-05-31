@@ -1,9 +1,17 @@
 const express = require("express");
 const path = require("path"); // ✅ You forgot to import this
+const app = express();
 let { v4: uuidv4 } = require('uuid');
 
+let methodOverride = require('method-override');
 
-const app = express();
+ 
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'));
+
+
+
+
 const port = 8080;
 
 // View engine setup
@@ -71,3 +79,44 @@ app.get("/posts/:id", (req, res) => {
 
     res.render("show.ejs", { postid });
 });
+//***************************** patch (update a part) **************************************/
+// app.patch("/posts/:id",(req , res)=>{
+//     let {content}=req.body.content;
+//     let { id } = req.params;
+//     id.content=content;
+//     res.redirect("/posts");
+
+
+// });
+
+app.patch("/posts/:id", (req, res) => {
+    let { id } = req.params;
+    let { content } = req.body;
+
+    let post = posts.find((p) => p.id === id);
+    if (!post) {
+        return res.status(404).send("❌ Post not found!");
+    }
+
+    post.content = content;
+    res.redirect("/posts");
+});
+
+app.get("/posts/:id/edit",(req ,res)=>{
+let { id } = req.params;
+    let postid = posts.find((p) => p.id === id);
+    if (!postid) {
+        return res.status(404).send("❌ Post not found!");
+    }
+
+    res.render("edit.ejs", { postid });
+
+});
+//************************************************** delete the routs(posts) *****************/
+
+app.delete("/posts/:id" , (req,res)=>{
+    let {id}=req.params;
+  posts= posts.filter((p) => p.id !== id);
+   res.redirect("/posts");
+    
+})
